@@ -7,6 +7,8 @@ plugins {
 
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    kotlin("plugin.serialization") version "1.8.20"
+
 }
 
 android {
@@ -100,4 +102,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
+    implementation("com.google.code.gson:gson:2.9.0") // Gradle KTS
 }

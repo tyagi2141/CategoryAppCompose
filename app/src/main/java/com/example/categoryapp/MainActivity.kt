@@ -3,6 +3,7 @@ package com.example.categoryapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -10,11 +11,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.categoryapp.ui.theme.CategoryAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CategoryAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,17 +33,56 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    // CategoryScreen()
+                    // DetailScreen()
+
+                    mainApp()
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun mainApp() {
+
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "Login") {
+        composable(route = "Login") {
+            Login { name, email ->
+                navController.navigate("Registration/$name/$email")
+            }
+            // DetailScreen()
+        }
+        composable(
+            route = "Registration/{name}/{email}", arguments = listOf(
+                navArgument("name") { type = NavType.StringType },
+                navArgument("email") { type = NavType.StringType }
+            )
+        )
+        {
+            val name = it.arguments?.getString("name")
+            val email = it.arguments?.getString("email")
+            registartion(name = name ?: "NA", email = email)
+        }
+
+    }
+
+}
+
+@Composable
+fun Login(modifier: Modifier = Modifier, onclick: (name: String, email: String) -> Unit) {
     Text(
-        text = "Hello $name!",
+        text = "Login!",
+        modifier = modifier.clickable { onclick("Orio", "rahul@gmail.com") }
+    )
+}
+
+@Composable
+fun registartion(modifier: Modifier = Modifier, name: String, email: String?) {
+    Text(
+        text = "Registration! .. $name .. $email",
         modifier = modifier
     )
 }
@@ -41,6 +91,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     CategoryAppTheme {
-        Greeting("Android")
+
     }
 }

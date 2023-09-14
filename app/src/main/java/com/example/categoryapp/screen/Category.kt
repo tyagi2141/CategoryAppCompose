@@ -1,6 +1,7 @@
 package com.example.categoryapp.screen
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -24,33 +25,43 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.categoryapp.R
 import com.example.categoryapp.viewmodel.TweetViewmodel
 
 @Composable
-fun CategoryScreen() {
-    val viewmodel: TweetViewmodel = viewModel()
+fun CategoryScreen(onClick: (category: String) -> Unit) {
+
+
+    val viewmodel: TweetViewmodel = hiltViewModel()
+
+
     val category: State<List<String>> = viewmodel.category.collectAsState()
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
     ) {
         items(category.value.distinct()) {
-            categoryItem(category = it)
+            categoryItem(category = it, onClick)
         }
     }
+
+
 }
 
 @Composable
-fun categoryItem(category: String) {
+fun categoryItem(category: String, onClick: (categort: String) -> Unit) {
 
     Box(
         modifier = Modifier
+            .clickable { onClick(category) }
             .size(160.dp)
             .padding(4.dp)
             .clip(RoundedCornerShape(8.dp))
-            .paint(painter = painterResource(id = R.drawable.wave), contentScale = ContentScale.Crop)
+            .paint(
+                painter = painterResource(id = R.drawable.wave),
+                contentScale = ContentScale.Crop
+            )
             .border(1.dp, color = Color.LightGray), contentAlignment = Alignment.BottomCenter
     ) {
         Text(
@@ -65,6 +76,6 @@ fun categoryItem(category: String) {
 @Preview(showSystemUi = false)
 @Composable
 fun display() {
-    // categoryItem(category = "Android")
-    CategoryScreen()
+    categoryItem(category = "Android", {})
+    // CategoryScreen({})
 }

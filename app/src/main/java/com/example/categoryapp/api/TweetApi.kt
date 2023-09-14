@@ -15,4 +15,13 @@ interface TweetApi {
     @GET("v3/b/64f99ebe8d92e126ae684886?meta=false")
     @Headers("X-Json-Path:tweets..category")
     suspend fun getCategory(): Response<List<String>>
+
+
+
+
 }
+
+
+//https://api.jsonbin.io/      v3/b/64f99ebe8d92e126ae684886?meta=false
+
+//https://api.jsonbin.io/v3/b/64f99ebe8d92e126ae684886?meta=false

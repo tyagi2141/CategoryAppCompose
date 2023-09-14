@@ -18,12 +18,32 @@ class TweetRepository @Inject constructor(private val tweetApi: TweetApi) {
     val tweet: StateFlow<List<Tweets>>
         get() = _tweets
 
+
+
+     //contact -> sysnc -> update list of contact in contactList -> rahul
+    //UI sceen  <- DATA viewmodel
+
+
+
+
     suspend fun getcategory() {
         val response = tweetApi.getCategory()
         if (response.isSuccessful && response.body() != null) {
             _category.emit(response.body()!!)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     suspend fun getTweets(category: String) {
         val response = tweetApi.getTweets("tweets[?(@.category==\"$category\")]")

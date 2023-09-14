@@ -16,15 +16,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.categoryapp.screen.CategoryScreen
+import com.example.categoryapp.screen.DetailScreen
 import com.example.categoryapp.ui.theme.CategoryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    //Dagger2  inject 0 to last
+    //Hilt
+    //Koin
+    //MVC model view controller
+    //MVP model view presenter
+    //MVVM model view viewModel
+
+    //UI screen -> viewMOdel -> repositiry [ -> localdatbase else
+    //                                     [->   serverAPI
+
+    //MVI model view intent ->   reduxe -> react native ->  AcycleGraph
+    //vipper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         setContent {
             CategoryAppTheme {
@@ -36,13 +55,34 @@ class MainActivity : ComponentActivity() {
                     // CategoryScreen()
                     // DetailScreen()
 
-                    mainApp()
+                    // mainApp()
+
+                    launchApp()
                 }
             }
         }
     }
 }
 
+@Composable
+fun launchApp() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "categoryScreen") {
+        composable(route = "categoryScreen") {
+            CategoryScreen {
+                navController.navigate("detail/$it")
+            }
+        }
+        composable(route = "detail/{category}", arguments = listOf(
+            navArgument(name = "category") {
+                type = NavType.StringType
+            }
+        )) {
+            val category = it.arguments?.getString("category")
+            DetailScreen(category = category?:"")
+        }
+    }
+}
 
 @Composable
 fun mainApp() {

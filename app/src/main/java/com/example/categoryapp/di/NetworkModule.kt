@@ -14,6 +14,8 @@ import javax.inject.Singleton
 class NetworkModule {
 
 
+    //A 1 -> 1 B -> 1 C
+
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
@@ -21,9 +23,11 @@ class NetworkModule {
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
+
+
     @Singleton
     @Provides
-    fun provideTweetApi(retrofit: Retrofit):TweetApi{
+    fun provideTweetApi(retrofit: Retrofit): TweetApi {
         return retrofit.create(TweetApi::class.java)
     }
 }

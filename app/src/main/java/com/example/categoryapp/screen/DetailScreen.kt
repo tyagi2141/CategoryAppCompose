@@ -19,25 +19,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.categoryapp.viewmodel.DetailTweetViewmodel
-import dagger.hilt.android.AndroidEntryPoint
 
 //import androidx.compose.foundation.lazy.items
 
 @Composable
-fun DetailScreen() {
-    val viewmodel: DetailTweetViewmodel = viewModel()
+fun DetailScreen(category: String) {
+    val viewmodel: DetailTweetViewmodel = hiltViewModel()
     val result = viewmodel.tweets.collectAsState()
-    Log.e("jhjhjkh","${result.value.map { it }}")
+    Log.e("jhjhjkh", "${result.value.map { it }}")
 
     LazyColumn() {
-
         items(result.value) {
             TweetListItem(tweet = it.text ?: "NA")
         }
-
     }
+
+
 }
 
 
